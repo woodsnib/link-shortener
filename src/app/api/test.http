@@ -1,0 +1,4 @@
+get http://localhost:3000/api/posts
+
+###
+post http://localhost:3000/api
