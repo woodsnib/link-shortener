@@ -1,14 +1,20 @@
+import getDomain from "../lib/getDomain"
+
 async function getData() {
-    // //1 endpoint - api
-    // const endpoint = "http://localhost:3000/api/posts"
-    // const res = await fetch(endpoint)
+    //1 endpoint - api
+    const domain = getDomain()
+    const endpoint = `${domain}/api/posts`
+    const res = await fetch(endpoint)
 
-    // if (!res.ok) {
-    //     throw new Error("Failed to fetch data")
-    // }
+    if (!res.ok) {
+        throw new Error("Failed to fetch data")
+    }
 
-    // return res.json()
-    return {}
+    if (res.headers.get("content-type") !== "application/json") {
+        return {items: []}
+    }
+
+    return res.json()
 }
 
 
