@@ -1,11 +1,27 @@
-import { getLinks } from "../lib/db";
+'use client'
+import useSWR, { mutate } from 'swr'
+import LinksCreateForm from './createForm';
 
-export default async function LinksHTMLTable() {
-    const linksResponse = await getLinks()
-    return <div>
+const fetcher = (url) => fetch(url).then((res)=>res.json());
+
+export default function LinksHTMLTable() {
+    const endpoint = "/api/links"
+    const {data, error, isLoading, mutate} = useSWR(endpoint, fetcher)
+    if (error) {
+        return "An error happened"
+    }
+    if (isLoading) {
+        return "Loading..."
+    }
+    
+    const didSubmit = () => {
+        mutate()
+    }
+    return <>
+        <LinksCreateForm didSubmit={didSubmit}/>
         <table>
             <tbody>
-            {linksResponse && linksResponse.map((link, idx)=>{
+            {data && data.map((link, idx)=>{
                 return <tr key={`link-item-${link.id}-${idx}`}>
                     <td>{link.id}</td>
                     <td>{link.url}</td>
@@ -13,5 +29,5 @@ export default async function LinksHTMLTable() {
             })}
             </tbody>
         </table>
-    </div>
+    </>
 }

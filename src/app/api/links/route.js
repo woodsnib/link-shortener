@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import isValidURL from "@/app/lib/isValidURL";
 import { addLink } from "@/app/lib/db";
-import { getLinks } from "@/app/lib/db";
+import { getMinLinks } from "@/app/lib/db";
 
 export async function GET(request) {
-    const links = await getLinks()
+    const links = await getMinLinks(100, 0)
     return NextResponse.json(links, {status: 200})
 }
 
